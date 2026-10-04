@@ -1,0 +1,30 @@
+{
+ "actions": [],
+ "autoname": "hash",
+ "creation": "2026-10-04 17:30:00.000000",
+ "description": "One ERPNext record ↔ one eBay object for an eBay Sync Settings: offers (per SKU), listings, imported orders and buyers. Keeps every sync idempotent.",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": ["settings", "kind", "erpnext_doctype", "erpnext_name", "ebay_id", "synced_at"],
+ "fields": [
+  {"fieldname": "settings", "fieldtype": "Link", "in_list_view": 1, "in_standard_filter": 1, "label": "Sync", "options": "eBay Sync Settings", "reqd": 1, "search_index": 1},
+  {"fieldname": "kind", "fieldtype": "Select", "in_list_view": 1, "in_standard_filter": 1, "label": "Kind", "options": "offer\nlisting\norder\nbuyer", "reqd": 1},
+  {"fieldname": "erpnext_doctype", "fieldtype": "Link", "label": "ERPNext DocType", "options": "DocType", "reqd": 1},
+  {"fieldname": "erpnext_name", "fieldtype": "Dynamic Link", "in_list_view": 1, "label": "ERPNext Record", "options": "erpnext_doctype", "reqd": 1, "search_index": 1},
+  {"fieldname": "ebay_id", "fieldtype": "Data", "in_list_view": 1, "label": "eBay ID", "reqd": 1, "search_index": 1},
+  {"fieldname": "synced_at", "fieldtype": "Datetime", "label": "Synced At"}
+ ],
+ "in_create": 1,
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-10-04 17:30:00.000000",
+ "modified_by": "Administrator",
+ "module": "eBay Sync",
+ "name": "eBay Sync Link",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [{"delete": 1, "read": 1, "role": "System Manager"}],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
