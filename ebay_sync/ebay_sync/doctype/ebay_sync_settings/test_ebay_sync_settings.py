@@ -216,10 +216,18 @@ class TestEbaySyncEngine(FrappeTestCase):
 			frappe.get_all("Payment Entry Deduction", filters={"parent": pe[0]}, pluck="amount"), [4.5]
 		)
 		self.assertTrue(sync.import_order(self.settings, order))  # idempotent
-		self.assertEqual(frappe.db.count("eBay Sync Link", {"settings": SYNC, "kind": "order"}), 1)
+		# the engine commits per order, so count this order's links only (not other runs' orders)
+		self.assertEqual(
+			frappe.db.count(
+				"eBay Sync Link", {"settings": SYNC, "kind": "order", "ebay_id": order["orderId"]}
+			),
+			1,
+		)
 		# a second order from the same buyer reuses the customer and doesn't duplicate the address
 		self.assertTrue(sync.import_order(self.settings, paid_order("12-34567-89013")))
-		self.assertEqual(frappe.db.count("eBay Sync Link", {"settings": SYNC, "kind": "buyer"}), 1)
+		self.assertEqual(
+			frappe.db.count("eBay Sync Link", {"settings": SYNC, "kind": "buyer", "ebay_id": "buyer_one"}), 1
+		)
 		self.assertEqual(
 			len(frappe.get_all("Dynamic Link", filters={"link_name": customer, "parenttype": "Address"})), 1
 		)
